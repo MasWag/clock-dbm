@@ -1,0 +1,889 @@
+# clock-dbm production crate verification run
+date: 2026-11-11T08:31:59Z
+host: Linux 6.8.0-149-generic x86_64
+commit: 79067f89d48163a696b0c4611e7fb83e921ce508
+=== [versions] $ cargo creusot version
+cargo-creusot 0.14.0
+Rust toolchain nightly-2026-08-03
+Why3 platform, version 1.8.2+git
+why3find v1.3.0+dev
+alt-ergo 2.6.4
+z3 5.1.0
+cvc4 1.8
+cvc5 bad CVC5 version: cvc5 1.4.1 [git 2b2e844 on branch HEAD]
+compiled as a unrestricted build with GCC version 11.4.0 on Sep 25 2026 20:47:45
+
+Copyright (c) 2009-2026 by the authors and their institutional
+affiliations listed at https://cvc5.github.io/people.html
+
+This build of cvc5 uses GPLed libraries, and is thus covered by
+the GNU General Public License (GPL) version 3.  Versions of cvc5
+are available that are covered by the (modified) BSD license. If
+you want to license cvc5 under this license, please configure cvc5
+with the "--no-gpl" option before building from sources.
+
+THIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.
+USE AT YOUR OWN RISK.
+
+This version of cvc5 is linked against the following non-(L)GPL'ed
+third party libraries.
+
+  CaDiCaL - Simplified Satisfiability Solver
+  See https://github.com/arminbiere/cadical for copyright information.
+
+  Editline Library
+  See https://thrysoee.dk/editline
+  for copyright information.
+
+  SymFPU - The Symbolic Floating Point Unit
+  See https://github.com/martin-cs/symfpu/tree/main for copyright information.
+
+This version of cvc5 is linked against the following third party
+libraries covered by the LGPLv3 license.
+See licenses/lgpl-3.0.txt for more information.
+
+  LibPoly polynomial library
+  See https://github.com/SRI-CSL/libpoly for copyright and
+  licensing information.
+
+cvc5 is statically linked against these libraries. To recompile
+this version of cvc5 with different versions of these libraries
+follow the instructions on https://github.com/cvc5/cvc5/blob/main/INSTALL.md
+
+This version of cvc5 is linked against the following third party
+libraries covered by the GPLv3 license.
+See licenses/gpl-3.0.txt for more information.
+
+  CLN - Class Library for Numbers
+  See http://www.ginac.de/CLN for copyright information.
+
+  glpk-cut-log - a modified version of GPLK, the GNU Linear Programming Kit
+  See http://github.com/timothy-king/glpk-cut-log for copyright information
+
+  CoCoALib - a computer algebra library
+  See https://cocoa.dima.unige.it/cocoa/cocoalib/index.shtml for copyright information
+
+  Normaliz - a rational cones library
+  See https://github.com/Normaliz/Normaliz for copyright information
+
+See the file COPYING (distributed with the source code, and with
+all binaries) for the full cvc5 copyright, licensing, and (lack of)
+warranty information.
+
+ (recommended 1.4.1)
+=== [versions] exit status: 0
+=== [rustc] $ rustc --version --verbose
+rustc 1.99.0-nightly (11177f223 2026-08-02)
+binary: rustc
+commit-hash: 11177f2235f0c842b00f82c558ad9480c0c3a895
+commit-date: 2026-08-02
+host: x86_64-unknown-linux-gnu
+release: 1.99.0-nightly
+LLVM version: 22.1.8
+=== [rustc] exit status: 0
+=== [build] $ cargo build --locked
+   Compiling clock-dbm v0.0.0 (/home/lab8/mwaga/Codes/clock-dbm-private)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.35s
+=== [build] exit status: 0
+=== [test] $ cargo test --locked
+   Compiling clock-dbm v0.0.0 (/home/lab8/mwaga/Codes/clock-dbm-private)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.77s
+     Running unittests src/lib.rs (target/debug/build/clock-dbm/ac5f09a958bb9b17/out/clock_dbm-ac5f09a958bb9b17)
+
+running 102 tests
+test ops::constraints::tests::bench_constant_time_paths ... ignored, timing benchmark; run explicitly with --release
+test ops::constraints::tests::bench_incremental_vs_full_closure ... ignored, timing benchmark; run explicitly with --release
+test ops::constraints::tests::bench_one_clock_workload ... ignored, timing benchmark; run explicitly with --release
+test bounds::tests::literal_constants ... ok
+test bounds::tests::codes ... ok
+test bounds::tests::codes_at_limits ... ok
+test dbm::tests::literal_constants ... ok
+test bounds::tests::relax_row_cases ... ok
+test dbm::tests::check_canonical_detects_each_violation ... ok
+test dbm::tests::too_many_variables ... ok
+test dbm::tests::matrix_get_set_tighten ... ok
+test ops::extra_m::tests::extra_m_timing ... ignored, timing benchmark; run explicitly with --release
+test dbm::tests::equality_is_entrywise ... ok
+test dbm::tests::accessors_and_argument_checks ... ok
+test dbm::tests::raw_inputs_are_normalized ... ok
+test dbm::tests::strict_zero_contradictions ... ok
+test ops::constraints::tests::argument_errors_precede_emptiness ... ok
+test ops::constraints::tests::zero_clocks ... ok
+test dbm::tests::satisfiable_strict_inequalities ... ok
+test dbm::tests::multiple_guards_and_zero_clocks ... ok
+test dbm::tests::range_limits ... ok
+test ops::extra_m::tests::dimension_mismatch_also_for_empty_zones ... ok
+test dbm::tests::inconsistent_triangle_cycles ... ok
+test ops::constraints::tests::range_limits_single_constraint ... ok
+test ops::constraints::tests::implied_constraints_return_the_input ... ok
+test ops::extra_m::tests::constants_at_the_limits ... ok
+test ops::extra_m::tests::empty_zones_keep_their_dimension ... ok
+test ops::constraints::tests::immediate_contradictions_are_empty ... ok
+test ops::extra_m::tests::norm_rules_on_bounds ... ok
+test ops::constraints::tests::weak_and_strict_tightening ... ok
+test ops::extra_m::tests::norm_upper_then_lower_on_one_entry ... ok
+test ops::extra_m::tests::max_bounds_validation ... ok
+test dbm::tests::constructors_match_oracle ... ok
+test ops::extra_m::tests::zero_clocks ... ok
+test dbm::tests::publish_canonical_rejects_noncanonical - should panic ... ok
+test ops::extra_m::tests::unrepresentable_result_is_a_range_error ... ok
+test ops::extra_m::tests::zero_ceilings ... ok
+test ops::extra_m::tests::worked_examples ... ok
+test ops::extra_m::tests::infinity_and_reference_row ... ok
+test ops::relations::tests::inclusion_is_not_symmetric ... ok
+test ops::relations::tests::worked_8_3_empty_zone_queries ... ok
+test ops::temporal::tests::bench_temporal_hot ... ignored, timing benchmark; run explicitly with --release
+test ops::temporal::tests::bench_temporal_paths ... ignored, timing benchmark; run explicitly with --release
+test ops::temporal::tests::argument_errors_precede_emptiness ... ok
+test ops::extra_m::tests::thresholds_two_clocks ... ok
+test ops::temporal::tests::empty_zones_keep_their_dimension ... ok
+test ops::constraints::tests::batch_contradicting_the_input_is_empty ... ok
+test ops::extra_m::tests::thresholds_one_clock ... ok
+test ops::temporal::tests::free_is_not_reset ... ok
+test ops::relations::tests::intersection_empty_only_through_a_long_cycle ... ok
+test ops::temporal::tests::future_advances_all_clocks_together ... ok
+test dbm::tests::constraint_fixtures_match_oracle ... ok
+test ops::temporal::tests::past_examples ... ok
+test ops::relations::tests::universal_versus_existential ... ok
+test ops::constraints::tests::constraint_fixtures_match_oracle ... ok
+test ops::temporal::tests::past_of_zero_and_universe ... ok
+test ops::relations::tests::unbounded_differences_are_not_empty ... ok
+test ops::temporal::tests::worked_8_4_reset_versus_free ... ok
+test shared::tests::argument_errors_match_dbm_also_on_empty ... ok
+test ops::temporal::tests::repeated_and_redundant_operations ... ok
+test shared::tests::conversions ... ok
+test shared::tests::equality_and_hash_ignore_pointers ... ok
+test ops::extra_m::tests::fixtures_match_oracle ... ok
+test shared::tests::shortcuts_do_not_copy ... ok
+test ops::temporal::tests::range_limits ... ok
+test shared::tests::snapshot_isolation_for_every_update ... ok
+test ops::temporal::tests::exhaustive_one_clock ... ok
+test ops::temporal::tests::fixtures_match_oracle ... ok
+test shared::tests::unique_updates_keep_the_allocation ... ok
+test ops::temporal::tests::strict_and_weak_boundaries ... ok
+test ops::relations::tests::strict_and_weak_endpoints ... ok
+test ops::extra_m::tests::exhaustive_one_clock ... ok
+test shared::tests::range_error_leaves_other_snapshots_unchanged ... ok
+test dbm::tests::every_closure_result_is_canonical_or_empty ... ok
+test dbm::tests::random_near_limit_constants ... ok
+test ops::relations::tests::random_zones_hash_consistently ... ok
+test dbm::tests::random_raw_matrices_match_oracle ... ok
+test shared::tests::fixtures_and_random_scenarios_agree_with_dbm ... ok
+test ops::temporal::tests::reset_and_free_preserve_the_other_clocks ... ok
+test ops::extra_m::tests::normalize_is_entrywise_norm ... ok
+test ops::extra_m::tests::random_zones_near_the_limits ... ok
+test ops::constraints::tests::shared_clocks_in_every_order ... ok
+test shared::tests::workspace_reuse_has_no_effect ... ok
+test ops::extra_m::tests::exhaustive_two_clocks_small_grid ... ok
+test ops::relations::tests::range_limits ... ok
+test dbm::tests::random_constraint_sets_match_oracle ... ok
+test ops::relations::tests::empty_operands_and_dimensions ... ok
+test ops::temporal::tests::random_near_limit_zones ... ok
+test ops::constraints::tests::random_near_limit_constants ... ok
+test ops::relations::tests::intersection_beyond_the_premise ... ok
+test ops::constraints::tests::exhaustive_one_clock ... ok
+test ops::relations::tests::random_alternating_cycles ... ok
+test ops::temporal::tests::past_matches_its_set_equation ... ok
+test ops::extra_m::tests::random_zones_match_oracle ... ok
+test ops::extra_m::tests::random_scenarios_match_oracle ... ok
+test ops::constraints::tests::random_single_constraints_match_oracle ... ok
+test ops::constraints::tests::random_batches_match_oracle_in_any_order ... ok
+test ops::relations::tests::inclusion_against_sampled_points ... ok
+test ops::temporal::tests::random_scenarios_match_oracle ... ok
+test ops::temporal::tests::random_zones_every_operation ... ok
+test ops::relations::tests::exhaustive_small_zones ... ok
+test ops::relations::tests::random_zones_match_oracle ... ok
+
+test result: ok. 96 passed; 0 failed; 6 ignored; 0 measured; 0 filtered out; finished in 4.70s
+
+     Running tests/bounds.rs (target/debug/build/clock-dbm/420fc5e93c4011ad/out/bounds-420fc5e93c4011ad)
+
+running 15 tests
+test accessors ... ok
+test addition_range_limits ... ok
+test addition_truth_table ... ok
+test clocks ... ok
+test addition_zeros_and_negatives ... ok
+test constants ... ok
+test constructor_limits ... ok
+test constraints ... ok
+test errors_display ... ok
+test lower_bound_guards_at_the_limits ... ok
+test tightness_order ... ok
+test variables ... ok
+test exhaustive_boundary_pairs ... ok
+test addition_laws ... ok
+test random_pairs ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/constraint_macro.rs (target/debug/build/clock-dbm/baf649d3b307de2c/out/constraint_macro-baf649d3b307de2c)
+
+running 15 tests
+test bound_expressions ... ok
+test bound_is_evaluated_once ... ok
+test positive_negative_and_zero_bounds ... ok
+test clock_and_variable_operands ... ok
+test range_errors_are_propagated ... ok
+test single_clock_bound_expressions ... ok
+test reference_clock_through_a_binding ... ok
+test single_clock_bound_is_evaluated_once ... ok
+test single_clock_forms_match_explicit_reference_clock ... ok
+test single_clock_lower_bounds ... ok
+test single_clock_upper_bounds ... ok
+test single_clock_variable_operands ... ok
+test single_clock_range_errors ... ok
+test single_clock_zone ... ok
+test strict_and_weak ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/dbm.rs (target/debug/build/clock-dbm/1474a3bdddbfed40/out/dbm-1474a3bdddbfed40)
+
+running 4 tests
+test constructors_for_small_dimensions ... ok
+test dimension_limits ... ok
+test workspace ... ok
+test equality_is_semantic ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/oracle.rs (target/debug/build/clock-dbm/8a4a47a5b5074a20/out/oracle-8a4a47a5b5074a20)
+
+running 19 tests
+test bound_addition_and_negation ... ok
+test bound_order_is_tightness ... ok
+test argument_errors ... ok
+test bound_parse_display_round_trip ... ok
+test compare_exact_reports_differences ... ok
+test from_matrix_imposes_nonnegativity_and_diagonal ... ok
+test constructors_in_every_fixture_dimension ... ok
+test public_invariant_checker_rejects_each_violation ... ok
+test scenarios_print_as_rust ... ok
+test outcome_checks ... ok
+test negative_bounds_and_diagonal_guards ... ok
+test worked_8_3_empty_zone_queries ... ok
+test range_classification ... ok
+test worked_8_5_extra_m ... ok
+test worked_8_1_strict_and_non_strict ... ok
+test worked_8_2_strict_zero_contradictions ... ok
+test worked_8_4_reset_versus_free ... ok
+test dimension_eight_chains ... ok
+test every_fixture_runs_and_matches_its_emptiness ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/oracle_random.rs (target/debug/build/clock-dbm/28c0dd18c85362f3/out/oracle_random-28c0dd18c85362f3)
+
+running 9 tests
+test shrinker_minimizes_failing_scenarios ... ok
+test failures_report_seed_and_shrunk_scenario ... ok
+test batches_are_order_and_multiplicity_independent ... ok
+test generators_produce_what_they_promise ... ok
+test algebraic_laws ... ok
+test queries_agree_with_witnesses ... ok
+test emptiness_decisions_are_witnessed ... ok
+test operations_satisfy_their_set_equations ... ok
+test inclusion_and_equality_agree_with_points ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.37s
+
+     Running tests/scaffold.rs (target/debug/build/clock-dbm/192666982735f9f4/out/scaffold-192666982735f9f4)
+
+running 1 test
+test crate_links ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests clock_dbm
+
+running 13 tests
+test src/bounds.rs - bounds::Constraint (line 857) ... ok
+test src/dbm.rs - dbm::Dbm (line 275) ... ok
+test src/bounds.rs - bounds::Bound (line 311) ... ok
+test src/dbm.rs - dbm::Workspace (line 2000) ... ok
+test src/lib.rs - (line 113) ... ok
+test src/lib.rs - (line 18) ... ok
+test src/ops/extra_m.rs - ops::extra_m::MaxBounds (line 178) ... ok
+test src/ops/relations.rs - ops::relations::Dbm::entails (line 300) ... ok
+test src/ops/temporal.rs - ops::temporal::Dbm::past (line 286) ... ok
+test src/macros.rs - macros::constraint (line 77) ... ok
+test src/macros.rs - macros::constraint (line 55) ... ok
+test src/shared.rs - shared::SharedDbm (line 138) ... ok
+test src/shared.rs - shared::SharedDbm::past (line 701) ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test src/macros.rs - macros::constraint (line 45) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+all doctests ran in 0.50s; merged doctests compilation took 0.44s
+=== [test] exit status: 0
+=== [clean] $ rm -rf target/creusot verif .why3find
+=== [clean] exit status: 0
+=== [prove] $ cargo creusot --erasure-check=error -- --locked
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling libc v0.2.191
+   Compiling unicode-ident v1.0.27
+   Compiling getrandom v0.4.3
+   Compiling cfg-if v1.0.5
+   Compiling syn v2.0.119
+   Compiling uuid v1.26.1
+   Compiling pearlite-syn v0.14.0
+   Compiling creusot-std-proc v0.14.0
+    Checking creusot-std v0.14.0
+    Checking clock-dbm v0.0.0 (/home/lab8/mwaga/Codes/clock-dbm-private)
+warning: unused imports: `Clone` and `PartialEq`
+  --> src/dbm.rs:99:15
+   |
+99 |     prelude::{Clone, Default, PartialEq, *},
+   |               ^^^^^           ^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Clone`
+   --> src/ops/extra_m.rs:163:15
+    |
+163 |     prelude::{Clone, PartialEq, *},
+    |               ^^^^^
+
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 43.74s
+Proved (342 files) ✔
+=== [prove] exit status: 0
+=== [proof-summary] $ /home/lab8/mwaga/Codes/clock-dbm-private/verification/scripts/check-proofs.sh verif
+342 Coma files, 842 goals, 2015 prover-discharged leaves, 0 problems
+=== [proof-summary] exit status: 0
+=== [negative] $ /home/lab8/mwaga/Codes/clock-dbm-private/verification/scripts/negative-control-crate.sh
+--- negative strictness
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 39.64s
+File "/tmp/creusot-negative-crate.VI5vEJ/strictness/src/bounds.rs", line 1046, characters 1-64: proof failed
+Goal Coma.vc_wrong_strictness: ✘ (4/5)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/bounds/wrong_strictness.coma: Coma.vc_wrong_strictness
+343 Coma files, 847 goals, 2023 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in bounds/wrong_strictness
+--- negative range
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.10s
+File "verif/clock_dbm_rlib/dbm/proof/sum_bounded.coma", lines 60-65: proof failed
+Goal Coma.vc_sum_bounded: ✘ (2/3)
+File "verif/clock_dbm_rlib/bounds/enc_range.coma", lines 47-49: proof failed
+Goal Coma.vc_enc_range: ✘ (2/3)
+File "verif/clock_dbm_rlib/bounds/neg_in_range.coma", lines 44-47: proof failed
+Goal Coma.vc_neg_in_range: ✘
+File "/tmp/creusot-negative-crate.VI5vEJ/range/src/ops/extra_m.rs", line 400, characters 1-40: proof failed
+Goal Coma.vc_thresholds: ✘ (5/6)
+File "/tmp/creusot-negative-crate.VI5vEJ/range/src/bounds.rs", line 462, characters 5-52: proof failed
+Goal Coma.vc_lt: ✘ (4/5)
+File "verif/clock_dbm_rlib/ops/temporal/proof/reset_representable.coma", lines 139-159: proof failed
+Goal Coma.vc_reset_representable: ✘ (3/4)
+File "/tmp/creusot-negative-crate.VI5vEJ/range/src/bounds.rs", line 445, characters 5-52: proof failed
+Goal Coma.vc_le: ✘ (5/6)
+File "/tmp/creusot-negative-crate.VI5vEJ/range/src/bounds.rs", line 514, characters 5-73: proof failed
+Goal Coma.vc_checked_add: ✘ (6/7)
+Error: 8 unproved files
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/bounds/enc_range.coma: Coma.vc_enc_range
+OPEN    clock_dbm_rlib/bounds/impl_Bound/checked_add.coma: Coma.vc_checked_add
+OPEN    clock_dbm_rlib/bounds/impl_Bound/le.coma: Coma.vc_le
+OPEN    clock_dbm_rlib/bounds/impl_Bound/lt.coma: Coma.vc_lt
+OPEN    clock_dbm_rlib/bounds/neg_in_range.coma: Coma.vc_neg_in_range
+OPEN    clock_dbm_rlib/dbm/proof/sum_bounded.coma: Coma.vc_sum_bounded
+OPEN    clock_dbm_rlib/ops/extra_m/thresholds.coma: Coma.vc_thresholds
+OPEN    clock_dbm_rlib/ops/temporal/proof/reset_representable.coma: Coma.vc_reset_representable
+342 Coma files, 842 goals, 1973 prover-discharged leaves, 8 problems
+ok: rejected (exit 1), open goals only in (bounds/(impl_Bound/(le|lt|checked_add)|neg_in_range|enc_range)|dbm/proof/sum_bounded|ops/temporal/proof/reset_representable|ops/extra_m/thresholds)\.coma
+--- negative index
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.61s
+File "/tmp/creusot-negative-crate.VI5vEJ/index/src/dbm.rs", line 1353, characters 1-68: proof failed
+Goal Coma.vc_close_in_place: ✘ (164/167)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/dbm/close_in_place.coma: Coma.vc_close_in_place
+342 Coma files, 842 goals, 1994 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in dbm/close_in_place\.coma
+--- negative strictzero
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.67s
+File "/tmp/creusot-negative-crate.VI5vEJ/strictzero/src/dbm.rs", line 1353, characters 1-68: proof failed
+Goal Coma.vc_close_in_place: ✘ (165/166)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/dbm/close_in_place.coma: Coma.vc_close_in_place
+342 Coma files, 842 goals, 1984 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in dbm/close_in_place\.coma
+--- negative rowmask
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.58s
+File "/tmp/creusot-negative-crate.VI5vEJ/rowmask/src/bounds.rs", line 662, characters 1-78: proof failed
+Goal Coma.vc_relax_row: ✘ (35/36)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/bounds/relax_row.coma: Coma.vc_relax_row
+342 Coma files, 842 goals, 2027 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in bounds/relax_row\.coma
+--- negative skiprow
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 42.46s
+File "/tmp/creusot-negative-crate.VI5vEJ/skiprow/src/ops/constraints.rs", line 390, characters 1-81: proof failed
+Goal Coma.vc_close_edge: ✘ (43/44)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/constraints/close_edge.coma: Coma.vc_close_edge
+342 Coma files, 842 goals, 2038 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/constraints/close_edge\.coma
+--- negative contra
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.34s
+File "/tmp/creusot-negative-crate.VI5vEJ/contra/src/ops/constraints.rs", line 328, characters 1-56: proof failed
+Goal Coma.vc_below_le_zero: ✘ (11/12)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/constraints/below_le_zero.coma: Coma.vc_below_le_zero
+342 Coma files, 842 goals, 2026 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/constraints/below_le_zero\.coma
+--- negative oneclock
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.94s
+File "/tmp/creusot-negative-crate.VI5vEJ/oneclock/src/ops/constraints.rs", line 465, characters 1-77: proof failed
+Goal Coma.vc_constrain_one: ✘ (48/49)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/constraints/constrain_one.coma: Coma.vc_constrain_one
+342 Coma files, 842 goals, 1996 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/constraints/constrain_one\.coma
+--- negative updiag
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 39.61s
+File "/tmp/creusot-negative-crate.VI5vEJ/updiag/src/ops/temporal.rs", line 234, characters 5-31: proof failed
+Goal Coma.vc_future: ✘ (17/18)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/temporal/impl_Dbm/future.coma: Coma.vc_future
+342 Coma files, 841 goals, 2011 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/temporal/impl_Dbm/future\.coma
+--- negative resetsign
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.63s
+File "/tmp/creusot-negative-crate.VI5vEJ/resetsign/src/ops/temporal.rs", line 442, characters 5-74: proof failed
+Goal Coma.vc_try_reset: ✘ (45/47)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/temporal/impl_Dbm/try_reset.coma: Coma.vc_try_reset
+342 Coma files, 842 goals, 2018 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/temporal/impl_Dbm/try_reset\.coma
+--- negative weakmask
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.01s
+File "/tmp/creusot-negative-crate.VI5vEJ/weakmask/src/bounds.rs", line 549, characters 1-54: proof failed
+Goal Coma.vc_add_weak: ✘ (6/7)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/bounds/add_weak.coma: Coma.vc_add_weak
+342 Coma files, 842 goals, 1990 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in bounds/add_weak\.coma
+--- negative touchedj
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.65s
+File "/tmp/creusot-negative-crate.VI5vEJ/touchedj/src/dbm.rs", line 1674, characters 5-77: proof failed
+Goal Coma.vc_meet: ✘ (72/73)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/dbm/impl_Matrix_1/meet.coma: Coma.vc_meet
+342 Coma files, 842 goals, 1997 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in dbm/impl_Matrix_[0-9]+/meet\.coma
+--- negative longcycle
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.92s
+File "/tmp/creusot-negative-crate.VI5vEJ/longcycle/src/dbm.rs", line 1875, characters 5-80: proof failed
+Goal Coma.vc_close_pivots: ✘ (52/53)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/dbm/impl_Matrix_2/close_pivots.coma: Coma.vc_close_pivots
+342 Coma files, 842 goals, 1988 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in dbm/impl_Matrix_[0-9]+/close_pivots\.coma
+--- negative subset
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.24s
+File "/tmp/creusot-negative-crate.VI5vEJ/subset/src/dbm.rs", line 1596, characters 5-57: proof failed
+Goal Coma.vc_entries_le: ✘ (36/38)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/dbm/impl_Dbm_1/entries_le.coma: Coma.vc_entries_le
+342 Coma files, 842 goals, 1997 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in dbm/impl_Dbm_[0-9]+/entries_le\.coma
+--- negative lowthr
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.48s
+File "/tmp/creusot-negative-crate.VI5vEJ/lowthr/src/ops/extra_m.rs", line 400, characters 1-40: proof failed
+Goal Coma.vc_thresholds: ✘ (7/8)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/extra_m/thresholds.coma: Coma.vc_thresholds
+342 Coma files, 841 goals, 2021 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/extra_m/thresholds\.coma
+--- negative changeflag
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.36s
+File "/tmp/creusot-negative-crate.VI5vEJ/changeflag/src/ops/extra_m.rs", line 566, characters 1-57: proof failed
+Goal Coma.vc_normalize: ✘ (40/41)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/extra_m/normalize.coma: Coma.vc_normalize
+342 Coma files, 843 goals, 2033 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/extra_m/normalize\.coma
+--- negative skipclose
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 39.25s
+File "/tmp/creusot-negative-crate.VI5vEJ/skipclose/src/ops/extra_m.rs", line 479, characters 5-99: proof failed
+Goal Coma.vc_try_extrapolate_max: ✘ (30/31)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/extra_m/impl_Dbm/try_extrapolate_max.coma: Coma.vc_try_extrapolate_max
+342 Coma files, 842 goals, 1979 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/extra_m/impl_Dbm/try_extrapolate_max\.coma
+--- negative refceil
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.78s
+File "/tmp/creusot-negative-crate.VI5vEJ/refceil/src/ops/extra_m.rs", line 359, characters 5-33: proof failed
+Goal Coma.vc_k: ✘ (5/6)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/extra_m/impl_MaxBounds/k.coma: Coma.vc_k
+342 Coma files, 842 goals, 2000 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/extra_m/impl_MaxBounds/k\.coma
+--- negative sharedimplied
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.43s
+File "/tmp/creusot-negative-crate.VI5vEJ/sharedimplied/src/shared.rs", line 492, characters 5-74: proof failed
+Goal Coma.vc_try_constrain'0: ✘ (34/37)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/shared/impl_SharedDbm/try_constrain.coma: Coma.vc_try_constrain'0
+342 Coma files, 842 goals, 2048 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in shared/impl_SharedDbm/try_constrain\.coma
+--- negative sharedsubset
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 39.86s
+File "/tmp/creusot-negative-crate.VI5vEJ/sharedsubset/src/shared.rs", line 639, characters 5-98: proof failed
+Goal Coma.vc_try_intersect'0: ✘ (43/44)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/shared/impl_SharedDbm/try_intersect.coma: Coma.vc_try_intersect'0
+342 Coma files, 840 goals, 2020 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in shared/impl_SharedDbm/try_intersect\.coma
+--- negative naivepast
+warning: function `snapshot_isolation` is never used
+  --> src/shared/proof.rs:21:15
+   |
+21 | pub(crate) fn snapshot_isolation(
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `copy_on_write_agrees` is never used
+  --> src/shared/proof.rs:68:15
+   |
+68 | pub(crate) fn copy_on_write_agrees(z: SharedDbm, x: Variable, value: i32) {
+   |               ^^^^^^^^^^^^^^^^^^^^
+
+warning: `clock-dbm` (lib) generated 4 warnings (run `cargo fix --lib -p clock-dbm` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 38.74s
+File "/tmp/creusot-negative-crate.VI5vEJ/naivepast/src/ops/temporal.rs", line 314, characters 5-29: proof failed
+Goal Coma.vc_past: ✘ (23/24)
+Error: 1 unproved file
+Error: 'why3find prove' failed
+OPEN    clock_dbm_rlib/ops/temporal/impl_Dbm/past.coma: Coma.vc_past
+342 Coma files, 842 goals, 1984 prover-discharged leaves, 1 problems
+ok: rejected (exit 1), open goals only in ops/temporal/impl_Dbm/past\.coma
+negative controls: PASS
+=== [negative] exit status: 0
+=== overall: PASS

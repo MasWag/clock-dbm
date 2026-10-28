@@ -1,0 +1,67 @@
+name: Creusot
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      full_gate:
+        description: Run the full gate including all 21 negative controls
+        type: boolean
+        required: true
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: creusot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      CARGO_TERM_COLOR: always
+      RUN_FULL_GATE: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_gate) || startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install opam and system libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y opam libgmp-dev zlib1g-dev pkg-config autoconf libzmq3-dev
+      - name: Cache pinned verification toolchain
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.local/share/creusot-v0.14.0
+            ~/.opam
+            verification/.tools
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: creusot-${{ runner.os }}-${{ runner.arch }}-v0.14.0-${{ hashFiles('.github/workflows/creusot.yml', 'verification/scripts/install-creusot.sh', 'verification/scripts/env.sh') }}
+      - name: Initialize opam
+        run: opam init --bare --disable-sandboxing --no-setup --yes
+      - name: Install pinned Creusot and provers
+        run: verification/scripts/install-creusot.sh
+      - name: Verify DBM kernel
+        env:
+          PROVE_LOG: ${{ runner.temp }}/creusot-proof.log
+        run: |
+          if [ "$RUN_FULL_GATE" = true ]; then
+            verification/scripts/prove-crate.sh
+          else
+            verification/scripts/prove-crate.sh --proof-only
+          fi
+      - name: Upload verification log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: creusot-${{ github.run_id }}
+          path: ${{ runner.temp }}/creusot-proof.log
+          if-no-files-found: ignore
+          retention-days: 30
