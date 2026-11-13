@@ -38,23 +38,16 @@ sub-goal.
 ## GitHub Actions
 
 The [Creusot workflow](../.github/workflows/creusot.yml) runs `--proof-only`
-for PRs targeting `public` and pushes to `public`. This mode still builds
+for PRs targeting `master` and pushes to `master`. This mode still builds
 and tests the crate, clears the proof cache, checks erasure, proves every
 obligation, and checks the generated proof certificates. It omits only the
 21 negative controls, which are more expensive and can encounter solver
 calibration instability.
 
-The **full gate** runs on version-tag pushes (`v*`) and when the
-`workflow_dispatch` input `full_gate` is enabled. Each run uploads its
-verification log as an Actions artifact. A successful proof-only run is
-**not** evidence that the negative controls passed.
-
-GitHub permits manual workflow dispatch only when the workflow exists on
-the repository's default branch. While this private repository defaults to
-`master` and release preparation uses `public`, run the full gate locally
-before release if the manual Actions trigger is unavailable. After the
-public snapshot has the workflow on its default branch, manual dispatch
-can be used normally.
+The **full gate** runs on version-tag pushes (`v*`) and on manual
+`workflow_dispatch` runs with the `full_gate` input enabled (the default).
+Each run uploads its verification log as an Actions artifact. A successful
+proof-only run is **not** evidence that the negative controls passed.
 
 ## Pitfalls
 

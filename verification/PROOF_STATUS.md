@@ -8,10 +8,13 @@ and the [algorithm guide](crate::guide::algorithms). Those references
 define the operations' semantics and describe their implementations; this
 report does not restate them.
 
-**Verification evidence is revision-specific.** The recorded proof run
-covers a development revision that precedes this source snapshot; its log
-records that revision's identifier. Verification of a different source
-revision, including a release, requires a corresponding proof run.
+**Verification evidence is revision-specific.** The recorded full-gate run
+covers commit `ddec62cf` of the private development repository, which is
+not part of the public history. Relative to it, the initial public commit
+`e3f9468` changes only the package version, CI branch filters, README and
+the recorded log; the Rust sources, tests and verification scripts are
+identical. Verification of any other revision, including a release,
+requires a corresponding proof run.
 
 ## Reproducing the verification
 
@@ -49,24 +52,27 @@ step. Run logs are saved to
 
 | Property | Recorded result |
 |---|---|
-| Source revision | pre-release development revision (the log's `commit:` line) |
-| Run | `verification/results/crate-darwin-arm64.log` (2026-11-11) |
+| Source revision | `ddec62cf` (private development commit preceding the public snapshot) |
+| Run | `verification/results/crate-darwin-arm64.log` (2026-11-12, mode `full`) |
 | Platform | macOS (Darwin) arm64 (64-bit `usize`) |
 | Creusot | v0.14.0 |
 | Proof obligations | 342 Coma files, 843 goals, all discharged |
 | Negative controls | 21 injected defects, all rejected |
 | Overall | PASS |
 
-This table is a recorded **local** verification run, not a GitHub Actions run.
-The separate [Creusot Actions workflow](../.github/workflows/creusot.yml)
-checks the pinned proof obligations and erasure on PRs targeting `public`
-and on pushes to `public`, and uploads source-revision-specific logs.
-Full verification, including the 21 negative controls, runs on version-tag
-pushes or an explicitly requested full manual dispatch (when available on
-the repository's default branch; see [verification README](README.md#github-actions)).
-The ordinary CI workflow remains separate. Consult the actual Actions run
-and its artifact for evidence of CI success; this historical table does not
-make that claim.
+This table is a historical **local** run, not a GitHub Actions run and not
+verification of a release commit. In the public repository, the
+[Creusot workflow](https://github.com/MasWag/clock-dbm/blob/master/.github/workflows/creusot.yml)
+runs the proof-only checks on PRs targeting `master` and on pushes to
+`master`; for example, the
+[proof-only run on `e3f9468`](https://github.com/MasWag/clock-dbm/actions/runs/43357728295)
+discharged all 843 goals without exercising the negative controls.
+The full gate, including the 21 negative controls, runs on version-tag
+pushes (`v*`) and full manual dispatches (see the
+[verification README](https://github.com/MasWag/clock-dbm/blob/master/verification/README.md#github-actions)).
+No full-gate run on a public commit, including a release tag, is recorded
+here; consult that Actions run and its log artifact for release evidence.
+The ordinary CI workflow remains separate.
 
 ## Pinned toolchain
 
@@ -224,11 +230,13 @@ DBM algorithms.
 ## Scope and limitations
 
 - **Proof provenance:** the recorded evidence covers only the
-  revision and target recorded in its log. Ordinary build/test CI is not a replacement
-  for rerunning the full pinned proof gate on a release revision.
-- **Platforms and resources:** the recorded proof run targets macOS
-  arm64. Verification of this revision on other targets, including the
-  Linux x86_64 target of earlier revisions, is not recorded.
+  revision and target recorded in its log. Ordinary build/test CI and
+  proof-only CI are not a replacement for rerunning the full pinned proof
+  gate on a release revision.
+- **Platforms and resources:** the recorded full-gate run targets macOS
+  arm64; `verification/results/crate-linux-x86_64.log` records an earlier
+  development revision and is not evidence for this one. Public proof-only
+  CI runs on Linux x86_64.
   Allocation failure, out-of-memory behavior and allocator capacity
   failures are not proved safe; proofs rely on the available collection
   specifications.
