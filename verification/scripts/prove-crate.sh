@@ -4,7 +4,8 @@
 # Every step runs from the repository root, its command and exit status are
 # appended to the log (default: verification/results/crate-<os>-<arch>.log),
 # and the script exits non-zero if any step fails. --proof-only omits the
-# expensive negative controls but still checks erasure and every proof goal.
+# expensive negative controls and reuses the why3find prover cache, but still
+# checks erasure and every proof goal.
 set -uo pipefail
 
 here="$(cd "$(dirname "$0")" && pwd)"
@@ -26,11 +27,11 @@ cd "$root"
 
 failed=0
 step() {
-    local name="$1"; shift
+    local name="$1" start="$SECONDS"; shift
     echo "=== [$name] \$ $*" | tee -a "$log"
     "$@" 2>&1 | tee -a "$log"
     local status="${PIPESTATUS[0]}"
-    echo "=== [$name] exit status: $status" | tee -a "$log"
+    echo "=== [$name] exit status: $status ($((SECONDS - start))s)" | tee -a "$log"
     [ "$status" -eq 0 ] || failed=1
 }
 
@@ -47,9 +48,17 @@ step rustc         rustc --version --verbose
 # Ordinary build and tests of the same sources (contracts erase here).
 step build         cargo build --locked
 step test          cargo test --locked
-# Start from a clean Creusot build and an empty prover cache, so that every
-# goal is proved by a fresh prover call (verification/README.md, pitfall 1).
-step clean         rm -rf target/creusot verif .why3find
+# Always start from a clean Creusot build, so that translation and the erasure
+# check rerun and every proof.json is regenerated (verification/README.md,
+# pitfall 1). The full gate also empties the why3find prover cache, so that
+# every goal is proved by a fresh prover call; --proof-only reuses the cached
+# results of identical prover tasks (verification/README.md, proof cache).
+if [ "$proof_only" -eq 0 ]; then
+    step clean     rm -rf target/creusot verif .why3find
+else
+    step clean     rm -rf target/creusot verif
+    echo "=== [clean] kept .why3find: $(find .why3find -mindepth 3 -type f 2>/dev/null | wc -l | tr -d ' ') cached prover results" | tee -a "$log"
+fi
 # Translate, check #[erasure] (failures are errors) and prove every goal.
 step prove         cargo creusot --erasure-check=error -- --locked
 # Independently re-check: every goal in every proof.json is proved.

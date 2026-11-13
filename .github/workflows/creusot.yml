@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 120
     env:
       CARGO_TERM_COLOR: always
-      RUN_FULL_GATE: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_gate) || startsWith(github.ref, 'refs/tags/v') }}
+      RUN_FULL_GATE: ${{ github.event_name == 'workflow_dispatch' && inputs.full_gate }}
     steps:
       - uses: actions/checkout@v7
       - name: Install opam and system libraries
@@ -48,6 +48,20 @@ jobs:
         run: opam init --bare --disable-sandboxing --no-setup --yes
       - name: Install pinned Creusot and provers
         run: verification/scripts/install-creusot.sh
+      # why3find's prover cache (verification/README.md, "Proof cache").
+      # Only proof-only runs use it; the full gate proves every goal afresh.
+      # Rust sources are not part of the key: why3find reuses a result only
+      # for an identical task and prover configuration. Caches are immutable,
+      # so each save gets a new key and restores take the newest by prefix.
+      - name: Restore why3find prover cache
+        id: why3find-cache
+        if: env.RUN_FULL_GATE != 'true'
+        uses: actions/cache/restore@v6
+        with:
+          path: .why3find
+          key: why3find-${{ runner.os }}-${{ runner.arch }}-v0.14.0-${{ hashFiles('why3find.json', 'rust-toolchain.toml', 'verification/scripts/install-creusot.sh', 'verification/scripts/env.sh') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            why3find-${{ runner.os }}-${{ runner.arch }}-v0.14.0-${{ hashFiles('why3find.json', 'rust-toolchain.toml', 'verification/scripts/install-creusot.sh', 'verification/scripts/env.sh') }}-
       - name: Verify DBM kernel
         env:
           PROVE_LOG: ${{ runner.temp }}/creusot-proof.log
@@ -57,6 +71,14 @@ jobs:
           else
             verification/scripts/prove-crate.sh --proof-only
           fi
+      # Only successful runs on master write the cache, so it never holds
+      # results of PR code or the timeouts of a failed run.
+      - name: Save why3find prover cache
+        if: success() && env.RUN_FULL_GATE != 'true' && github.ref == 'refs/heads/master'
+        uses: actions/cache/save@v6
+        with:
+          path: .why3find
+          key: ${{ steps.why3find-cache.outputs.cache-primary-key }}
       - name: Upload verification log
         if: always()
         uses: actions/upload-artifact@v7

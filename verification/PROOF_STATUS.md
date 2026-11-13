@@ -27,8 +27,9 @@ verification/scripts/prove-crate.sh --proof-only # PR/push proof and erasure che
 ```
 
 The proof gate, `verification/scripts/prove-crate.sh`, records tool versions,
-builds and tests the executable crate, clears the Creusot build and
-`why3find` proof cache, and then runs:
+builds and tests the executable crate, clears the Creusot build output
+(`target/creusot`, `verif`) and, in the full gate only, the `why3find`
+prover cache (`.why3find`), and then runs:
 
 ```sh
 cargo creusot --erasure-check=error -- --locked
@@ -37,10 +38,15 @@ verification/scripts/negative-control-crate.sh
 ```
 
 The proof-summary step checks that all generated proof goals have prover
-certificates; the negative controls check that deliberately incorrect
-variants are rejected. A successful translation alone is not counted as verification. The
-`--proof-only` mode runs every step except the 21 negative controls; a
+certificates; it does not rerun the provers. The negative controls check
+that deliberately incorrect variants are rejected. A successful translation
+alone is not counted as verification. The `--proof-only` mode runs every step except the 21 negative controls; a
 proof-only pass does not certify that deliberately defective code is rejected.
+It also reuses cached prover verdicts for proof tasks identical to earlier
+ones (same task checksum and prover configuration), so it does not show that
+every goal was proved by a fresh prover call; the full gate does. Delete
+`.why3find` to force fresh prover calls in proof-only mode (see the
+[verification README](https://github.com/MasWag/clock-dbm/blob/master/verification/README.md#proof-cache)).
 Prover outcomes near the time limit can vary between runs on
 the same machine: an earlier clean run of the recorded revision left one
 goal of the unchanged `ops/temporal/proof/rewind` lemma open and could not
@@ -63,15 +69,15 @@ step. Run logs are saved to
 This table is a historical **local** run, not a GitHub Actions run and not
 verification of a release commit. In the public repository, the
 [Creusot workflow](https://github.com/MasWag/clock-dbm/blob/master/.github/workflows/creusot.yml)
-runs the proof-only checks on PRs targeting `master` and on pushes to
-`master`; for example, the
+runs proof-only checks on PRs targeting `master`, pushes to `master`, and
+version-tag pushes (`v*`); for example, the
 [proof-only run on `e3f9468`](https://github.com/MasWag/clock-dbm/actions/runs/43357728295)
 discharged all 843 goals without exercising the negative controls.
-The full gate, including the 21 negative controls, runs on version-tag
-pushes (`v*`) and full manual dispatches (see the
+The full gate, including the 21 negative controls, is available through
+manual dispatch with `full_gate` enabled or the local proof script (see the
 [verification README](https://github.com/MasWag/clock-dbm/blob/master/verification/README.md#github-actions)).
-No full-gate run on a public commit, including a release tag, is recorded
-here; consult that Actions run and its log artifact for release evidence.
+For release-revision proof results, consult the tag's proof-only Actions run
+and its log artifact; that run does not check the negative controls.
 The ordinary CI workflow remains separate.
 
 ## Pinned toolchain
@@ -230,9 +236,10 @@ DBM algorithms.
 ## Scope and limitations
 
 - **Proof provenance:** the recorded evidence covers only the
-  revision and target recorded in its log. Ordinary build/test CI and
-  proof-only CI are not a replacement for rerunning the full pinned proof
-  gate on a release revision.
+  revision and target recorded in its log. Ordinary build/test CI does not
+  verify the proof obligations. Proof-only CI checks a release tag's proof
+  goals and erasure but omits negative controls; use the manually triggered
+  or local full gate when fresh negative-control evidence is required.
 - **Platforms and resources:** the recorded full-gate run targets macOS
   arm64; `verification/results/crate-linux-x86_64.log` records an earlier
   development revision and is not evidence for this one. Public proof-only

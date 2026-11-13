@@ -6,8 +6,7 @@ rust-version = "1.88"
 description = "Difference bound matrices (DBMs) over packed i32 bounds for timed-automata zones"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/MasWag/clock-dbm"
-# Not published to crates.io.
-publish = false
+publish = true
 
 [dependencies]
 creusot-std = "=0.14.0"
