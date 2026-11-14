@@ -1,6 +1,8 @@
 # clock-dbm
 
 [![License: Apache-2.0 OR MIT](https://img.shields.io/badge/License-Apache--2.0%20OR%20MIT-blue.svg)](#license)
+[![Crates.io Version](https://img.shields.io/crates/v/clock-dbm)](https://crates.io/crates/clock-dbm)
+[![proofs.rs](https://img.shields.io/endpoint?url=https%3A%2F%2Fproofs.rs%2Fapi%2Fv1%2Fcrates%2Fclock-dbm%2F0.1.0%2Fbadge)](https://proofs.rs/crate/clock-dbm?version=0.1.0)
 
 `clock-dbm` is a Rust library for representing **zones of timed automata**
 using canonical difference-bound matrices (DBMs). Clock values are nonnegative
